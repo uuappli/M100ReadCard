@@ -94,6 +94,7 @@ namespace M100ReadCard
             try
             {
                 int i = M100IC_DLL.M100_EnterCard(hadler, 0x30, 3000);
+                int j = 0;
                 if (i != 0)
                 {
                     //MyMsg.MsgInfo("进卡失败");
@@ -103,8 +104,13 @@ namespace M100ReadCard
                 i = M100IC_DLL.M100_MoveCard(hadler, 0x31);
                 if (i != 0)
                 {
+                    j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                    if (j != 0)
+                    {
+                        return "退卡失败";
+                    }
                     //MyMsg.MsgInfo("卡片传动IC卡位失败");
-                    return "卡片传动IC卡位失败";
+                    return "卡片传动IC卡位失败" + i;
                 }
 
                 byte[] _cputype = new byte[1];
@@ -123,13 +129,17 @@ namespace M100ReadCard
                     i = SHBZCard.iReadPersonPublicInfo(SHBZHM, XM, XB, MZ, CSD, CSRQ, pErrMsg);
                     if (i != 0)
                     {
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
                         return "读取社保号失败 " + pErrMsg.ToString();
                     }
 
                     i = M100IC_DLL.M100_MoveCard(hadler, 0x32);
                     if (i != 0)
                     {
-                        //MyMsg.MsgInfo("退卡失败");
                         return "退卡失败";
                     }
 
@@ -139,7 +149,6 @@ namespace M100ReadCard
                     }
                     catch
                     {
-                        //MyMsg.MsgInfo("卡片数据错误！或卡插入方向不正确");
                         return "卡片数据错误！或卡插入方向不正确";
                     }
 
@@ -201,12 +210,22 @@ namespace M100ReadCard
                     i = M100IC_DLL.M100_MoveCard(hadler, 0x30);
                     if (i != 0)
                     {
-                        return "卡片传动射频卡位失败";
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
+                        return "卡片传动射频卡位失败" +i;
                     }
 
                     i = M100IC_DLL.M100_S50DetectCard(hadler);
                     if (i != 0)
                     {
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
                         return "寻卡失败" + i;
                     }
 
@@ -214,6 +233,11 @@ namespace M100ReadCard
                     i = M100IC_DLL.M100_S50GetCardID(hadler, _cardid);
                     if (i != 0)
                     {
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
                         return "读卡片序列号失败" + i;
                     }
 
@@ -224,22 +248,38 @@ namespace M100ReadCard
                     key[3] = Convert.ToByte("4D", 16);
                     key[4] = Convert.ToByte("5E", 16);
                     key[5] = Convert.ToByte("6F", 16);
-                    i = M100IC_DLL.M100_S50LoadSecKey(hadler, 1, 0X30, key);
+                    i = M100IC_DLL.M100_S50LoadSecKey(hadler, Convert.ToByte(1), 0X30, key);
                     if (i != 0)
                     {
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
                         return "校验密码失败" + i;
                     }
 
-                    byte[] _blockData = new byte[16];
-                    i = M100IC_DLL.M100_S50ReadBlock(hadler, 0, _blockData);
+                    byte[] _blockData = new byte[32];
+                    //StringBuilder sbblockData = new StringBuilder(1024);
+                    i = M100IC_DLL.M100_S50ReadBlock(hadler, Convert.ToByte(0), _blockData);
                     if (i != 0)
                     {
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
                         return "读块数据失败" + i;
                     }
 
                     i = M100IC_DLL.M100_S50Halt(hadler);
                     if (i != 0)
                     {
+                        j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                        if (j != 0)
+                        {
+                            return "退卡失败";
+                        }
                         return "停机失败" + i;
                     }
                     
@@ -253,6 +293,7 @@ namespace M100ReadCard
                     {
 
                         string msg = Encoding.ASCII.GetString(_blockData);
+                        //string msg = sbblockData.ToString();
                         //string returnstr = Pub.Decrypt(msg, "SOFT-HIS");
                         cardNo = msg;
                     }

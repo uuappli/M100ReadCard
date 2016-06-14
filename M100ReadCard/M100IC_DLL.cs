@@ -135,6 +135,9 @@ namespace M100ReadCard
         [DllImport("M100_DLL\\M100_DLL.dll", EntryPoint = "M100_S50ReadBlock", CharSet = CharSet.Ansi)]
         public static extern int M100_S50ReadBlock(IntPtr ComHandle, byte _Block, byte[] _BlockData);
 
+        [DllImport("M100_DLL\\M100_DLL.dll", EntryPoint = "M100_S50ReadBlock", CharSet = CharSet.Ansi)]
+        public static extern int M100_S50ReadBlock(IntPtr ComHandle, byte _Block, StringBuilder _BlockData);
+
         [DllImport("M100_DLL\\M100_DLL.dll", EntryPoint = "M100_S50WriteBlock", CharSet = CharSet.Ansi)]
         public static extern int M100_S50WriteBlock(IntPtr ComHandle, byte _Block, byte[] _BlockData);
 
