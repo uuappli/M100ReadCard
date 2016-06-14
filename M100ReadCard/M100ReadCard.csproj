@@ -49,20 +49,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="INIClass.cs" />
+    <Compile Include="M100ICReadCard.cs" />
+    <Compile Include="M100IC_DLL.cs" />
     <Compile Include="M100ReadCard.cs" />
     <Compile Include="M100_DLL.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReadCardBusiness.cs" />
+    <Compile Include="SHBZCard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CRTAPI\Crt.h" />
     <None Include="CRTAPI\CrtApi.lib" />
+    <None Include="M100_DLL\M100_DLL.h" />
+    <None Include="M100_DLL\M100_DLL.lib" />
+    <None Include="SHBZK\read_sicard.h" />
+    <None Include="SHBZK\Si_ReadBasic.lib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CRTAPI\CrtApi.dll" />
     <Content Include="CRTAPI\POSAPI.dll" />
     <Content Include="CRTAPI\readme.txt" />
     <Content Include="CRTAPI\test.exe" />
+    <Content Include="M100_DLL\M100_DLL.dll" />
+    <Content Include="SHBZK\Si_ReadBasic.dll" />
+    <Content Include="SHBZK\WltRS.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

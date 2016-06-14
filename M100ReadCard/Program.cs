@@ -9,8 +9,8 @@ namespace M100ReadCard
         {
             try
             {
-                M100ReadCard m100ReadCard = new M100ReadCard();
-                string cardid = m100ReadCard.ReadCard();
+                ReadCardBusiness readCardBusiness = new ReadCardBusiness();
+                string cardid = readCardBusiness.ReadCard();
                 //string cardid = "131313123";
 
                 string current = Directory.GetCurrentDirectory() + "/ReadCard.ini";//获取当前根目录
