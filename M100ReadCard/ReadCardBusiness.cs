@@ -171,8 +171,27 @@ namespace M100ReadCard
                     //    return "密码验证失败";
                     //}
 
-                    byte[] iDNum = new byte[9];
-                    i = M100IC_DLL.M100_AutoReadSocialSecurityCardID(hadler, iDNum);
+                    //byte[] IDNum = new byte[9];
+                    //i = M100IC_DLL.M100_AutoReadSocialSecurityCardID(hadler, IDNum);
+                    //if (i != 0)
+                    //{
+                    //    j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
+                    //    if (j != 0)
+                    //    {
+                    //        return "退卡失败";
+                    //    }
+
+                    //    return "读卡失败" + i;
+                    //}
+
+                    byte[] IDNum = new byte[18];
+                    byte[] Name = new byte[30];
+                    byte[] Sex = new byte[10];
+                    byte[] Nation = new byte[10];
+                    byte[] Regional = new byte[3];
+                    byte[] BirthDay = new byte[4];
+                    byte[] CardID = new byte[9];
+                    i = M100IC_DLL.M100_AutoReadSocialSecurityInfoAndCardID(hadler, IDNum, Name, Sex, Nation, Regional, BirthDay, CardID);
                     if (i != 0)
                     {
                         j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
@@ -201,7 +220,7 @@ namespace M100ReadCard
                     try
                     {
 
-                        string msg = Encoding.ASCII.GetString(iDNum);
+                        string msg = Encoding.ASCII.GetString(IDNum);
                         //string returnstr = Pub.Decrypt(msg, "SOFT-HIS");
                         cardNo = msg;
                     }
@@ -254,7 +273,7 @@ namespace M100ReadCard
                     key[3] = Convert.ToByte("4D", 16);
                     key[4] = Convert.ToByte("5E", 16);
                     key[5] = Convert.ToByte("6F", 16);
-                    i = M100IC_DLL.M100_S50LoadSecKey(hadler, Convert.ToByte(1), 0X30, key);
+                    i = M100IC_DLL.M100_S50LoadSecKey(hadler, 1, 0X30, key);
                     if (i != 0)
                     {
                         j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
@@ -266,8 +285,7 @@ namespace M100ReadCard
                     }
 
                     byte[] _blockData = new byte[16];
-                    //StringBuilder sbblockData = new StringBuilder(1024);
-                    i = M100IC_DLL.M100_S50ReadBlock(hadler, Convert.ToByte(4), _blockData);
+                    i = M100IC_DLL.M100_S50ReadBlock(hadler, 4, _blockData);
                     if (i != 0)
                     {
                         j = M100IC_DLL.M100_MoveCard(hadler, 0x32);
@@ -298,9 +316,15 @@ namespace M100ReadCard
                     try
                     {
 
-                        string msg = Encoding.ASCII.GetString(_blockData);
-                        //string msg = sbblockData.ToString();
-                        //string returnstr = Pub.Decrypt(msg, "SOFT-HIS");
+                        //string msg = Encoding.ASCII.GetString(_blockData);
+                        string msg="";
+                        for(int k=0;k<16;k++)
+                        {
+                            msg += _blockData[k].ToString("x2");
+                        }
+
+                        msg = msg.Substring(msg.Length - 12);
+
                         cardNo = msg;
                     }
                     catch

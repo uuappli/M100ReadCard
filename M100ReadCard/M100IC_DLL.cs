@@ -129,14 +129,14 @@ namespace M100ReadCard
         [DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_S50GetCardID", CharSet = CharSet.Ansi)]
         public static extern int M100_S50GetCardID(IntPtr ComHandle, byte[] _CardID);
 
-        [DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_S50LoadSecKey", CharSet = CharSet.Ansi)]
+        [DllImport("C:/M100_DLL/M100_DLL.dll")]
         public static extern int M100_S50LoadSecKey(IntPtr ComHandle, byte _BlockAddr, byte _KEYType, byte[] _KEY);
 
-        [DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_S50ReadBlock", CharSet = CharSet.Ansi)]
+        [DllImport("C:/M100_DLL/M100_DLL.dll")]
         public static extern int M100_S50ReadBlock(IntPtr ComHandle, byte _Block, byte[] _BlockData);
 
-        [DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_S50ReadBlock", CharSet = CharSet.Ansi)]
-        public static extern int M100_S50ReadBlock(IntPtr ComHandle, byte _Block, StringBuilder _BlockData);
+        //[DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_S50ReadBlock", CharSet = CharSet.Ansi)]
+        //public static extern int M100_S50ReadBlock(IntPtr ComHandle, byte _Block, StringBuilder _BlockData);
 
         [DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_S50WriteBlock", CharSet = CharSet.Ansi)]
         public static extern int M100_S50WriteBlock(IntPtr ComHandle, byte _Block, byte[] _BlockData);
@@ -182,8 +182,13 @@ namespace M100ReadCard
         public static extern int M100_S70Halt(IntPtr ComHandle);
 
         //社保卡
-        [DllImport("C:/M100_DLL/M100_DLL.dll", EntryPoint = "M100_AutoReadSocialSecurityCardID", CharSet = CharSet.Ansi)]
+        [DllImport("C:/M100_DLL/M100_DLL.dll")]
         public static extern int M100_AutoReadSocialSecurityCardID(IntPtr ComHandle, byte[] CardID);
+
+        [DllImport("C:/M100_DLL/M100_DLL.dll")]
+        public static extern int M100_AutoReadSocialSecurityInfoAndCardID(IntPtr ComHandle, byte[] IDNum, byte[] Name, byte[] Sex, byte[] Nation, byte[] Regional, byte[] BirthDay, byte[] CardID);
+
+
 
     }
 }
